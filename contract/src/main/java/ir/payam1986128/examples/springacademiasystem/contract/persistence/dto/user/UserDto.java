@@ -1,4 +1,4 @@
-package ir.payam1986128.examples.springacademiasystem.contract.persistence.dto;
+package ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.user;
 
 import ir.payam1986128.examples.springacademiasystem.contract.enumeration.Role;
 import lombok.Getter;

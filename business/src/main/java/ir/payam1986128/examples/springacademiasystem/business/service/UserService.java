@@ -2,7 +2,7 @@ package ir.payam1986128.examples.springacademiasystem.business.service;
 
 import ir.payam1986128.examples.springacademiasystem.business.mapper.UserBusinessMapper;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.UserDaoApi;
-import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.UserDto;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.user.UserDto;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -20,11 +20,6 @@ public class SemesterService implements SemesterServiceApi {
     }
 
     @Override
-    public SemestersGetResponse getSemesters(SemestersGetRequest request) {
-        return null;
-    }
-
-    @Override
     public SemesterCreationResponse create(SemesterCreationRequest request) {
         return null;
     }

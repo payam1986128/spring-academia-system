@@ -1,7 +1,7 @@
 package ir.payam1986128.examples.springacademiasystem.persistence.dao;
 
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.UserDaoApi;
-import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.UserDto;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.user.UserDto;
 import ir.payam1986128.examples.springacademiasystem.persistence.entity.User;
 import ir.payam1986128.examples.springacademiasystem.persistence.mapper.UserPersistenceMapper;
 import ir.payam1986128.examples.springacademiasystem.persistence.repository.UserRepository;

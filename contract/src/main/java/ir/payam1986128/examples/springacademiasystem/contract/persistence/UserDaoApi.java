@@ -1,6 +1,6 @@
 package ir.payam1986128.examples.springacademiasystem.contract.persistence;
 
-import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.UserDto;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.user.UserDto;
 
 import java.util.Optional;
 import java.util.UUID;
