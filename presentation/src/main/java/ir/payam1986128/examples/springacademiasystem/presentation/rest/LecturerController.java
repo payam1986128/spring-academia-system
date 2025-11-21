@@ -1,6 +1,7 @@
 package ir.payam1986128.examples.springacademiasystem.presentation.rest;
 
 import ir.payam1986128.examples.springacademiasystem.contract.business.LecturerServiceApi;
+import ir.payam1986128.examples.springacademiasystem.contract.business.OfferServiceApi;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.lecturer.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class LecturerController {
 
     private LecturerServiceApi service;
+    private OfferServiceApi offerService;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
@@ -42,5 +44,11 @@ public class LecturerController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") String id) {
         service.delete(id);
+    }
+
+    @GetMapping("/{id}/offers")
+    @ResponseStatus(HttpStatus.OK)
+    public LecturerOffersGetResponse getLecturerOffers(@PathVariable String id) {
+        return offerService.getOffersByLecturer(id);
     }
 }

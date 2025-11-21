@@ -3,12 +3,10 @@ package ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.util.List;
 
 @Getter
 @Setter
-public class LecturerGetResponse {
-    private UUID id;
-    private String firstName;
-    private String lastName;
+public class LecturerOffersGetResponse {
+    private List<LecturerOfferDto> offers;
 }

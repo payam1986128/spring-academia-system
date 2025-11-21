@@ -1,22 +1,16 @@
 package ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.offer;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class OfferCreationRequest {
-
-    @NotBlank
+public class OfferDto {
+    private String id;
     private String title;
-
-    @NotBlank
     private String courseId;
-
-    @NotBlank
+    private String semesterId;
     private String lecturerId;
-
-    @NotBlank
-    private Integer capacity;
+    private int capacity;
+    private int registered;
 }

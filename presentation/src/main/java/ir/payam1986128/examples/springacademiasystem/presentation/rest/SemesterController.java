@@ -1,5 +1,6 @@
 package ir.payam1986128.examples.springacademiasystem.presentation.rest;
 
+import ir.payam1986128.examples.springacademiasystem.contract.business.OfferServiceApi;
 import ir.payam1986128.examples.springacademiasystem.contract.business.SemesterServiceApi;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester.*;
 import jakarta.validation.Valid;
@@ -13,17 +14,12 @@ import org.springframework.web.bind.annotation.*;
 public class SemesterController {
 
     private SemesterServiceApi service;
+    private OfferServiceApi offerService;
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public SemesterGetResponse getSemester(@PathVariable("id") String id) {
         return service.getSemester(id);
-    }
-
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
-    public SemestersGetResponse getSemesters(@Valid SemestersGetRequest request) {
-        return service.getSemesters(request);
     }
 
     @PostMapping
@@ -42,5 +38,11 @@ public class SemesterController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") String id) {
         service.delete(id);
+    }
+
+    @GetMapping("/current/offers")
+    @ResponseStatus(HttpStatus.OK)
+    public SemesterOffersGetResponse getSemesterOffers() {
+        return offerService.getOffersBySemester();
     }
 }
