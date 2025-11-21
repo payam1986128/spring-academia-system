@@ -1,6 +1,5 @@
 package ir.payam1986128.examples.springacademiasystem.contract.business;
 
-
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.auth.AuthRequest;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.auth.AuthResponse;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.auth.RefreshTokenResponse;

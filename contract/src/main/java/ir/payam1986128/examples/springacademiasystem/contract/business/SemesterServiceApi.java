@@ -7,10 +7,7 @@ import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.s
 
 public interface SemesterServiceApi {
     SemesterGetResponse getSemester(String id);
-
     SemesterCreationResponse create(SemesterCreationRequest request);
-
     void update(String id, SemesterEditionRequest request);
-
     void delete(String id);
 }
