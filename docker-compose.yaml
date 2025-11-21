@@ -1,0 +1,22 @@
+services:
+  spring-academia-system:
+    build: .
+    container_name: spring-academia-system
+    depends_on:
+      - postgresql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgreshost:5432/sas
+    ports:
+      - "8080:8080"
+
+  postgresql:
+    image: postgres
+    container_name: postgresql
+    hostname: postgreshost
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: sas
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
