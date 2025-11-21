@@ -28,7 +28,7 @@ class AcademiaApplicationTests {
         CreateUserRequest request = new CreateUserRequest();
         request.setUsername("admin");
         request.setPassword("password");
-        request.setRole(Role.MANUFACTURER);
+        request.setRole(Role.FACULTY_EDUCATION_OFFICE);
 
         RestAssured
                 .given()
@@ -43,12 +43,12 @@ class AcademiaApplicationTests {
     }
 
     @Test
-    void givenGetProducts_whenNotProvidedAccessToken_thenUnauthorised() {
+    void givenGetStudents_whenNotProvidedAccessToken_thenUnauthorised() {
         RestAssured
                 .given()
                     .accept(APPLICATION_JSON_VALUE)
                 .when()
-                    .get("/api/products")
+                    .get("/api/students")
                 .then()
                     .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
