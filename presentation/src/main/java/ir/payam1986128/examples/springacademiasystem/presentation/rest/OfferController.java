@@ -66,7 +66,7 @@ public class OfferController {
             @PathVariable("id") String id,
             @AuthenticationPrincipal UserDetails user
     ) {
-        return enrollmentService.getEnrollment(offerId, user.getUsername());
+        return enrollmentService.getEnrollment(offerId, id, user.getUsername());
     }
 
     @DeleteMapping("/{offerId}/enrollments/{id}")
@@ -76,6 +76,6 @@ public class OfferController {
             @PathVariable("id") String id,
             @AuthenticationPrincipal UserDetails user
     ) {
-        enrollmentService.drop(offerId, user.getUsername());
+        enrollmentService.drop(offerId, id, user.getUsername());
     }
 }

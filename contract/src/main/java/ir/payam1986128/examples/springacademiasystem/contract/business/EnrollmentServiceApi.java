@@ -7,7 +7,7 @@ import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.e
 public interface EnrollmentServiceApi {
     EnrollmentCreationResponse register(String offerId, String username);
 
-    EnrollmentGetResponse getEnrollment(String offerId, String username);
+    EnrollmentGetResponse getEnrollment(String offerId, String id, String username);
 
-    void drop(String offerId, String username);
+    void drop(String offerId, String id, String username);
 }

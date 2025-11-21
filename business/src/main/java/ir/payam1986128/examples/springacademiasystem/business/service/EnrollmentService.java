@@ -21,12 +21,12 @@ public class EnrollmentService implements EnrollmentServiceApi {
     }
 
     @Override
-    public EnrollmentGetResponse getEnrollment(String offerId, String username) {
+    public EnrollmentGetResponse getEnrollment(String offerId, String id, String username) {
         return null;
     }
 
     @Override
-    public void drop(String offerId, String username) {
+    public void drop(String offerId, String id, String username) {
 
     }
 }
