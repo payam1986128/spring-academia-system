@@ -9,10 +9,12 @@ import ir.payam1986128.examples.springacademiasystem.persistence.entity.Offer;
 import ir.payam1986128.examples.springacademiasystem.persistence.entity.QOffer;
 import ir.payam1986128.examples.springacademiasystem.persistence.mapper.OfferPersistenceMapper;
 import ir.payam1986128.examples.springacademiasystem.persistence.repository.OfferRepository;
+import jakarta.persistence.LockModeType;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -65,6 +67,7 @@ public class OfferDao implements OfferDaoApi {
     }
 
     @Override
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     public void editOffer(OfferDto offerDto) {
         repository.save(mapper.toOffer(offerDto));
     }

@@ -23,7 +23,4 @@ public class Enrollment {
     @JoinColumn(name = "offer_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Offer offer;
-
-    @Version
-    private int version;
 }

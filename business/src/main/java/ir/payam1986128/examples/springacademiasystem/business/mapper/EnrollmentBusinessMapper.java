@@ -6,6 +6,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface EnrollmentBusinessMapper extends CommonBusinessMapper {
-    EnrollmentGetResponse toEnrollmentGetResponse(EnrollmentDto course);
-    EnrollmentDto toEnrollmentDto(EnrollmentDto course);
+    EnrollmentGetResponse toEnrollmentGetResponse(EnrollmentDto enrollmentDto);
+    EnrollmentDto toEnrollmentDto(EnrollmentDto enrollmentDto);
 }

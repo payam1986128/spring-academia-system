@@ -25,6 +25,12 @@ public class EnrollmentDao implements EnrollmentDaoApi {
     }
 
     @Override
+    public Optional<EnrollmentDto> getEnrollment(UUID offerId, UUID id, UUID studentId) {
+        Optional<Enrollment> optionalEnrollment = repository.findByIdAndOffer_IdAndStudent_Id(id, offerId, studentId);
+        return optionalEnrollment.map(mapper::toEnrollmentDto);
+    }
+
+    @Override
     public UUID addEnrollment(EnrollmentDto enrollmentDto) {
         Enrollment enrollment = mapper.toEnrollment(enrollmentDto);
         repository.save(enrollment);

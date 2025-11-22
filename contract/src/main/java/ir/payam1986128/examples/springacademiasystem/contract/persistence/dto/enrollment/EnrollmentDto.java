@@ -13,5 +13,4 @@ public class EnrollmentDto {
     private UUID id;
     private StudentDto student;
     private OfferDto offer;
-    private int version;
 }
