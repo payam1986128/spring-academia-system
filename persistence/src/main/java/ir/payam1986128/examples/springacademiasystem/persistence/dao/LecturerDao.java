@@ -54,10 +54,8 @@ public class LecturerDao implements LecturerDaoApi {
     }
 
     @Override
-    public void editLecturer(UUID id, LecturerDto lecturerDto) {
-        Lecturer lecturer = mapper.toLecturer(lecturerDto);
-        lecturer.setId(id);
-        repository.save(lecturer);
+    public void editLecturer(LecturerDto lecturerDto) {
+        repository.save(mapper.toLecturer(lecturerDto));
     }
 
     @Override

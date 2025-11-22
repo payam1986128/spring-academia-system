@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class OfferFilterDto extends FilterDto {
-    private String title;
+    private String title = "";
     private UUID courseId;
     private UUID lecturerId;
     private UUID semesterId;

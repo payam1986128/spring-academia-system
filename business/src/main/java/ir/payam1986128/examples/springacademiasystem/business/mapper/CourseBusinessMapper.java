@@ -1,9 +1,11 @@
 package ir.payam1986128.examples.springacademiasystem.business.mapper;
 
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.course.CourseDto;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.course.CourseFilterDto;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.course.CoursesDto;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.course.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -15,5 +17,5 @@ public interface CourseBusinessMapper extends CommonBusinessMapper {
     CourseDto toCourseDto(CourseDto course);
     List<CourseDto> toCoursesDto(List<CourseDto> coursesDto);
     CourseDto toCourseDto(CourseCreationRequest courseCreationRequest);
-    CourseDto toCourseDto(CourseEditionRequest courseEditionRequest);
+    void toCourseDto(@MappingTarget CourseDto courseDto, CourseEditionRequest courseEditionRequest);
 }

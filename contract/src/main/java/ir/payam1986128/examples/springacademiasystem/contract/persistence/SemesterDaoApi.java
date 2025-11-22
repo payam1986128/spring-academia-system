@@ -7,8 +7,9 @@ import java.util.UUID;
 
 public interface SemesterDaoApi {
     Optional<SemesterDto> getSemester(UUID id);
+    Optional<SemesterDto> getCurrentSemester();
     UUID addSemester(SemesterDto semesterDto);
-    void editSemester(UUID id, SemesterDto semesterDto);
+    void editSemester(SemesterDto semesterDto);
     void deleteSemester(UUID id);
     boolean isSemesterExist(UUID id);
 }

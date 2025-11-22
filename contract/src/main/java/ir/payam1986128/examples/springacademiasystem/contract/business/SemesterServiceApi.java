@@ -1,12 +1,11 @@
 package ir.payam1986128.examples.springacademiasystem.contract.business;
 
-import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester.SemesterCreationRequest;
-import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester.SemesterCreationResponse;
-import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester.SemesterEditionRequest;
-import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester.SemesterGetResponse;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.semester.SemesterDto;
+import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester.*;
 
 public interface SemesterServiceApi {
     SemesterGetResponse getSemester(String id);
+    SemesterDto getCurrentSemester();
     SemesterCreationResponse create(SemesterCreationRequest request);
     void update(String id, SemesterEditionRequest request);
     void delete(String id);

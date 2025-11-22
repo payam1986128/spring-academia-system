@@ -11,7 +11,10 @@ public interface OfferDaoApi {
     Optional<OfferDto> getOffer(UUID id);
     OffersDto getOffers(OfferFilterDto filter);
     UUID addOffer(OfferDto offerDto);
-    void editOffer(UUID id, OfferDto offerDto);
+    void editOffer(OfferDto offerDto);
     void deleteOffer(UUID id);
     boolean isOfferExist(UUID id);
+    OffersDto getOffersByCourse(UUID courseId);
+    OffersDto getOffersByCurrentSemester();
+    OffersDto getOffersByLecturer(UUID lecturerId);
 }

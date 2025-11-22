@@ -8,6 +8,7 @@ import ir.payam1986128.examples.springacademiasystem.persistence.repository.Seme
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,6 +26,12 @@ public class SemesterDao implements SemesterDaoApi {
     }
 
     @Override
+    public Optional<SemesterDto> getCurrentSemester() {
+        Optional<Semester> optionalSemester = repository.findByStartDateBeforeAndEndDateAfter(LocalDateTime.now());
+        return optionalSemester.map(mapper::toSemesterDto);
+    }
+
+    @Override
     public UUID addSemester(SemesterDto semesterDto) {
         Semester semester = mapper.toSemester(semesterDto);
         repository.save(semester);
@@ -32,10 +39,8 @@ public class SemesterDao implements SemesterDaoApi {
     }
 
     @Override
-    public void editSemester(UUID id, SemesterDto semesterDto) {
-        Semester semester = mapper.toSemester(semesterDto);
-        semester.setId(id);
-        repository.save(semester);
+    public void editSemester(SemesterDto semesterDto) {
+        repository.save(mapper.toSemester(semesterDto));
     }
 
     @Override

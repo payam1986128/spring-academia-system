@@ -55,10 +55,8 @@ public class StudentDao implements StudentDaoApi {
     }
 
     @Override
-    public void editStudent(UUID id, StudentDto studentDto) {
-        Student student = mapper.toStudent(studentDto);
-        student.setId(id);
-        repository.save(student);
+    public void editStudent(StudentDto studentDto) {
+        repository.save(mapper.toStudent(studentDto));
     }
 
     @Override

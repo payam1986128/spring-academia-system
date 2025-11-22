@@ -1,9 +1,12 @@
 package ir.payam1986128.examples.springacademiasystem.business.mapper;
 
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.student.StudentDto;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.student.StudentFilterDto;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.student.StudentsDto;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.student.*;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -15,5 +18,6 @@ public interface StudentBusinessMapper extends CommonBusinessMapper {
     StudentDto toStudentDto(StudentDto student);
     List<StudentDto> toStudentsDto(List<StudentDto> studentsDto);
     StudentDto toStudentDto(StudentCreationRequest studentCreationRequest);
-    StudentDto toStudentDto(StudentEditionRequest studentEditionRequest);
+    @Mapping(target = "studentNumber", ignore = true)
+    void toStudentDto(@MappingTarget StudentDto student, StudentEditionRequest studentEditionRequest);
 }

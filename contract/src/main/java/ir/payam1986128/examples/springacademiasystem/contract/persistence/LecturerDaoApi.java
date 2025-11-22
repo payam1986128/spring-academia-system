@@ -11,7 +11,7 @@ public interface LecturerDaoApi {
     Optional<LecturerDto> getLecturer(UUID id);
     LecturersDto getLecturers(LecturerFilterDto filter);
     UUID addLecturer(LecturerDto lecturerDto);
-    void editLecturer(UUID id, LecturerDto lecturerDto);
+    void editLecturer(LecturerDto lecturerDto);
     void deleteLecturer(UUID id);
     boolean isLecturerExist(UUID id);
 }

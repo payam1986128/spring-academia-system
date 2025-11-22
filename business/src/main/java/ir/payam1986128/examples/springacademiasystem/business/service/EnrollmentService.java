@@ -7,8 +7,10 @@ import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.e
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.enrollment.EnrollmentGetResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class EnrollmentService implements EnrollmentServiceApi {
 

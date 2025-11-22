@@ -15,8 +15,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.StreamSupport;
 
 @Component
 @AllArgsConstructor
@@ -62,10 +65,8 @@ public class OfferDao implements OfferDaoApi {
     }
 
     @Override
-    public void editOffer(UUID id, OfferDto offerDto) {
-        Offer offer = mapper.toOffer(offerDto);
-        offer.setId(id);
-        repository.save(offer);
+    public void editOffer(OfferDto offerDto) {
+        repository.save(mapper.toOffer(offerDto));
     }
 
     @Override
@@ -76,5 +77,31 @@ public class OfferDao implements OfferDaoApi {
     @Override
     public boolean isOfferExist(UUID id) {
         return repository.existsById(id);
+    }
+
+    @Override
+    public OffersDto getOffersByCourse(UUID courseId) {
+        return getOffersByPredicate(QOffer.offer.course.id.eq(courseId));
+    }
+
+    @Override
+    public OffersDto getOffersByCurrentSemester() {
+        LocalDate currentDate = LocalDate.now();
+        return getOffersByPredicate(QOffer.offer.semester.startDate.before(currentDate)
+                .and(QOffer.offer.semester.endDate.after(currentDate)));
+    }
+
+    @Override
+    public OffersDto getOffersByLecturer(UUID lecturerId) {
+        return getOffersByPredicate(QOffer.offer.lecturer.id.eq(lecturerId));
+    }
+
+    private OffersDto getOffersByPredicate(BooleanExpression predicate) {
+        Iterable<Offer> offerIterable = repository.findAll(predicate);
+        List<Offer> offers = StreamSupport.stream(offerIterable.spliterator(), false).toList();
+        return OffersDto.builder()
+                .offers(mapper.toOffersDto(offers))
+                .total(offers.size())
+                .build();
     }
 }

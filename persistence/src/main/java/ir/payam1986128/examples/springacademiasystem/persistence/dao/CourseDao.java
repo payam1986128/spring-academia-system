@@ -56,10 +56,8 @@ public class CourseDao implements CourseDaoApi {
     }
 
     @Override
-    public void editCourse(UUID id, CourseDto courseDto) {
-        Course course = mapper.toCourse(courseDto);
-        course.setId(id);
-        repository.save(course);
+    public void editCourse(CourseDto courseDto) {
+        repository.save(mapper.toCourse(courseDto));
     }
 
     @Override
