@@ -2,6 +2,7 @@ package ir.payam1986128.examples.springacademiasystem.presentation;
 
 import ir.payam1986128.examples.springacademiasystem.business.exception.EntityNotFoundException;
 import ir.payam1986128.examples.springacademiasystem.business.exception.HandledException;
+import ir.payam1986128.examples.springacademiasystem.business.exception.InvalidRequestException;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.exception.ExceptionDto;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,12 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public ExceptionDto handleException(AccessDeniedException ex) {
+        return new ExceptionDto(ex.getClass().getSimpleName(), ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidRequestException.class)
+    public ExceptionDto handleException(InvalidRequestException ex) {
         return new ExceptionDto(ex.getClass().getSimpleName(), ex.getMessage());
     }
 

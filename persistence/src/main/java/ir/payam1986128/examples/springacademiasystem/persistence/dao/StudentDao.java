@@ -32,6 +32,11 @@ public class StudentDao implements StudentDaoApi {
     }
 
     @Override
+    public Optional<StudentDto> getStudent(String studentNumber) {
+        return Optional.empty();
+    }
+
+    @Override
     public StudentsDto getStudents(StudentFilterDto filter) {
         PageRequest pageRequest = PageRequest.of(filter.getPage()-1, filter.getPageSize());
         if (filter.getSort() != null && filter.getSortDirection() != null) {

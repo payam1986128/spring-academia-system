@@ -1,11 +1,15 @@
 package ir.payam1986128.examples.springacademiasystem.business.service;
 
 import ir.payam1986128.examples.springacademiasystem.business.exception.InvalidRefreshTokenException;
+import ir.payam1986128.examples.springacademiasystem.business.exception.InvalidRequestException;
 import ir.payam1986128.examples.springacademiasystem.business.exception.UserAlreadyExistsException;
 import ir.payam1986128.examples.springacademiasystem.business.exception.UserNotFoundException;
 import ir.payam1986128.examples.springacademiasystem.business.mapper.UserBusinessMapper;
 import ir.payam1986128.examples.springacademiasystem.contract.business.AuthServiceApi;
+import ir.payam1986128.examples.springacademiasystem.contract.enumeration.Role;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.StudentDaoApi;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.UserDaoApi;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.student.StudentDto;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.user.UserDto;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.auth.AuthRequest;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.auth.AuthResponse;
@@ -21,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -29,6 +34,7 @@ public class AuthService implements AuthServiceApi {
 
     private final AuthenticationManager authenticationManager;
     private final UserDaoApi userDao;
+    private final StudentDaoApi studentDao;
     private final JwtTokenService jwtTokenService;
     private final PasswordEncoder passwordEncoder;
     private final UserBusinessMapper userMapper;
@@ -44,8 +50,14 @@ public class AuthService implements AuthServiceApi {
         if (userDao.findByUsername(user.getUsername()).isPresent()) {
             throw new UserAlreadyExistsException();
         }
+        Optional<StudentDto> student = studentDao.getStudent(user.getStudentNumber());
+        if (Role.STUDENT.equals(user.getRole()) && student.isEmpty()) {
+            throw new InvalidRequestException("Invalid student number");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        UUID savedId = userDao.save(userMapper.toUserDto(user));
+        UserDto userDto = userMapper.toUserDto(user);
+        userDto.setStudent(student.get());
+        UUID savedId = userDao.save(userDto);
         return new CreateUserResponse(savedId.toString());
     }
 

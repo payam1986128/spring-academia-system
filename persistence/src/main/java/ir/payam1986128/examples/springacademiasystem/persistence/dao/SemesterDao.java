@@ -27,7 +27,8 @@ public class SemesterDao implements SemesterDaoApi {
 
     @Override
     public Optional<SemesterDto> getCurrentSemester() {
-        Optional<Semester> optionalSemester = repository.findByStartDateBeforeAndEndDateAfter(LocalDateTime.now());
+        LocalDateTime currentDate = LocalDateTime.now();
+        Optional<Semester> optionalSemester = repository.findByStartDateBeforeAndEndDateAfter(currentDate, currentDate);
         return optionalSemester.map(mapper::toSemesterDto);
     }
 

@@ -18,4 +18,6 @@ public class CreateUserRequest {
 
     @NotNull
     private Role role;
+
+    private String studentNumber;
 }

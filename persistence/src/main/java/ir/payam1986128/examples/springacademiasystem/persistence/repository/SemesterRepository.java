@@ -11,5 +11,5 @@ import java.util.UUID;
 
 @Repository
 public interface SemesterRepository extends JpaRepository<Semester, UUID>, QuerydslPredicateExecutor<Semester> {
-    Optional<Semester> findByStartDateBeforeAndEndDateAfter(LocalDateTime time);
+    Optional<Semester> findByStartDateBeforeAndEndDateAfter(LocalDateTime before, LocalDateTime after);
 }

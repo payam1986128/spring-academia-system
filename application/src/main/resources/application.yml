@@ -9,14 +9,14 @@ spring:
       hibernate:
         show_sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/sct
+    url: jdbc:postgresql://localhost:5432/sas
     username: user
     password: secret
     driver-class-name: org.postgresql.Driver
 
 security:
   jwt:
-    secret-key: x
+    secret-key: cEB5QG0xOTg2MTI4X0BjQGRFbWlAX3NZc1RFbQ==
     access-token-expiration: 3600000
     refresh-token-expiration: 86400000
     skipped-endpoints:

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface StudentDaoApi {
     Optional<StudentDto> getStudent(UUID id);
+    Optional<StudentDto> getStudent(String studentNumber);
     StudentsDto getStudents(StudentFilterDto filter);
     UUID addStudent(StudentDto studentDto);
     void editStudent(StudentDto studentDto);
