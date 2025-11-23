@@ -64,9 +64,4 @@ public class CourseDao implements CourseDaoApi {
     public void deleteCourse(UUID id) {
         repository.deleteById(id);
     }
-
-    @Override
-    public boolean isCourseExist(UUID id) {
-        return repository.existsById(id);
-    }
 }

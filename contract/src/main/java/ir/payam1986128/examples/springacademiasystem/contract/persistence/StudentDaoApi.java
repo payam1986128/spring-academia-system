@@ -14,5 +14,4 @@ public interface StudentDaoApi {
     UUID addStudent(StudentDto studentDto);
     void editStudent(StudentDto studentDto);
     void deleteStudent(UUID id);
-    boolean isStudentExist(UUID id);
 }

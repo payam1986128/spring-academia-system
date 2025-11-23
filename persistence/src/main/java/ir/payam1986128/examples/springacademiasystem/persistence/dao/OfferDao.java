@@ -78,11 +78,6 @@ public class OfferDao implements OfferDaoApi {
     }
 
     @Override
-    public boolean isOfferExist(UUID id) {
-        return repository.existsById(id);
-    }
-
-    @Override
     public OffersDto getOffersByCourse(UUID courseId) {
         return getOffersByPredicate(QOffer.offer.course.id.eq(courseId));
     }

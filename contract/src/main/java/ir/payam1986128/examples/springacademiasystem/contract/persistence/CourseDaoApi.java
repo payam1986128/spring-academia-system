@@ -13,5 +13,4 @@ public interface CourseDaoApi {
     UUID addCourse(CourseDto courseDto);
     void editCourse(CourseDto courseDto);
     void deleteCourse(UUID id);
-    boolean isCourseExist(UUID id);
 }

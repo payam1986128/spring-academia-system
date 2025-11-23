@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -48,10 +47,5 @@ public class SemesterDao implements SemesterDaoApi {
     @Override
     public void deleteSemester(UUID id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public boolean isSemesterExist(UUID id) {
-        return repository.existsById(id);
     }
 }

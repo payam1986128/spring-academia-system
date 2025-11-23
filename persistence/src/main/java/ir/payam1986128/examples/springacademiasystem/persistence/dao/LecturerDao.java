@@ -62,9 +62,4 @@ public class LecturerDao implements LecturerDaoApi {
     public void deleteLecturer(UUID id) {
         repository.deleteById(id);
     }
-
-    @Override
-    public boolean isLecturerExist(UUID id) {
-        return repository.existsById(id);
-    }
 }

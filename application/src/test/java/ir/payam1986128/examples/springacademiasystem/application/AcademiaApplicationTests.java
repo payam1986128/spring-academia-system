@@ -26,7 +26,7 @@ class AcademiaApplicationTests {
     @Test
     void givenUserData_whenCreateUser_thenSuccess() {
         CreateUserRequest request = new CreateUserRequest();
-        request.setUsername("admin");
+        request.setUsername("edu1");
         request.setPassword("password");
         request.setRole(Role.FACULTY_EDUCATION_OFFICE);
 

@@ -71,9 +71,4 @@ public class StudentDao implements StudentDaoApi {
     public void deleteStudent(UUID id) {
         repository.deleteById(id);
     }
-
-    @Override
-    public boolean isStudentExist(UUID id) {
-        return repository.existsById(id);
-    }
 }

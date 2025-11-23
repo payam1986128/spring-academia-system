@@ -11,5 +11,4 @@ public interface SemesterDaoApi {
     UUID addSemester(SemesterDto semesterDto);
     void editSemester(SemesterDto semesterDto);
     void deleteSemester(UUID id);
-    boolean isSemesterExist(UUID id);
 }

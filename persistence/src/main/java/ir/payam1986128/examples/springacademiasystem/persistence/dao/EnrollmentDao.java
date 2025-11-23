@@ -41,9 +41,4 @@ public class EnrollmentDao implements EnrollmentDaoApi {
     public void deleteEnrollment(UUID id) {
         repository.deleteById(id);
     }
-
-    @Override
-    public boolean isEnrollmentExist(UUID id) {
-        return repository.existsById(id);
-    }
 }

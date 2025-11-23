@@ -17,7 +17,7 @@ Then you can call the other service without setting access token in Authorizatio
 
 
 ### Frameworks and used libraries:<br/>
-1. Java 17
+1. Java 21
 2. Spring boot v3.5.5
 3. Spring web starter: to prepare REST services
 4. Spring security starter: to prepare authentication and authorization

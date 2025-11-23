@@ -13,5 +13,4 @@ public interface LecturerDaoApi {
     UUID addLecturer(LecturerDto lecturerDto);
     void editLecturer(LecturerDto lecturerDto);
     void deleteLecturer(UUID id);
-    boolean isLecturerExist(UUID id);
 }
