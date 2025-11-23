@@ -56,7 +56,7 @@ public class AuthService implements AuthServiceApi {
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         UserDto userDto = userMapper.toUserDto(user);
-        userDto.setStudent(student.get());
+        userDto.setStudent(student.orElse(null));
         UUID savedId = userDao.save(userDto);
         return new CreateUserResponse(savedId.toString());
     }
