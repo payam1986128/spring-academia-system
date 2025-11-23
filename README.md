@@ -48,7 +48,7 @@ username: admin<br/>
 password: admin
 1. Create another user with role FACULTY_EDUCATION_OFFICE
 2. Login with that just been created user of faculty education office
-3. Create a semester with start date before now and it's end date after now. for example:
+3. Create a semester with start date before now and it's end date after now
 4. Create a course
 5. Create a lecturer
 6. Create an offer with these course and lecturer (current semester is automatically will be used for this offer)
