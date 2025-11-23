@@ -13,10 +13,16 @@
 					"name": "create user",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"manuf\",\r\n    \"password\": \"123456\",\r\n    \"role\": \"MANUFACTURER\"\r\n}",
+							"raw": "{\r\n    \"username\": \"stu1\",\r\n    \"password\": \"stu1\",\r\n    \"role\": \"STUDENT\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -34,7 +40,80 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "create edu member",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"edu1\",\r\n    \"password\": \"edu1\",\r\n    \"role\": \"FACULTY_EDUCATION_OFFICE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth",
+										"users"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "create student",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"stu1\",\r\n    \"password\": \"stu1\",\r\n    \"role\": \"STUDENT\",\r\n    \"studentNumber\": \"250001\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth/users",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth",
+										"users"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "login",
@@ -44,10 +123,12 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"token\", jsonData.accessToken);"
+									"pm.collectionVariables.set(\"token\", jsonData.accessToken);\r",
+									"pm.collectionVariables.set(\"refreshToken\", jsonData.refreshToken);"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -56,7 +137,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"manuf\",\r\n    \"password\": \"123456\"\r\n}",
+							"raw": "{\r\n    \"username\": \"stu1\",\r\n    \"password\": \"stu1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -74,7 +155,98 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "login as admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "login as edu member",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"edu1\",\r\n    \"password\": \"edu1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "login as student",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"stu1\",\r\n    \"password\": \"stu1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/auth/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "refresh token",
@@ -84,10 +256,12 @@
 							"script": {
 								"exec": [
 									"var jsonData = pm.response.json();\r",
-									"pm.collectionVariables.set(\"token\", jsonData.accessToken);"
+									"pm.collectionVariables.set(\"token\", jsonData.accessToken);\r",
+									"pm.collectionVariables.set(\"refreshToken\", jsonData.refreshToken);"
 								],
 								"type": "text/javascript",
-								"packages": {}
+								"packages": {},
+								"requests": {}
 							}
 						}
 					],
@@ -96,7 +270,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhdWRpIiwiaWF0IjoxNzU4MzAyNTAwLCJleHAiOjE3NTgzODg5MDB9.zk5N1cGYO1xmkxNrY2KqmjfY9_QszI9y1KPdMK1xxcs\"\r\n}",
+							"raw": "{\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -133,19 +307,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/semesters/:id",
+							"raw": "{{url}}/semesters/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"semesters",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{semesterId}}"
 								}
 							]
 						}
@@ -154,6 +327,20 @@
 				},
 				{
 					"name": "add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"semesterId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -173,12 +360,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/semesters",
+							"raw": "{{url}}/semesters",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"semesters"
 							]
 						}
@@ -198,7 +384,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"1404-2\",\r\n    \"startDate\": \"2025-09-06\",\r\n    \"endDate\": \"2026-02-06\"\r\n}",
+							"raw": "{\r\n    \"title\": \"1404-2\",\r\n    \"startDate\": \"2025-09-06\",\r\n    \"endDate\": \"2026-02-07\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -206,19 +392,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/semesters/:id",
+							"raw": "{{url}}/semesters/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"semesters",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{semesterId}}"
 								}
 							]
 						}
@@ -237,19 +422,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/semesters/:id",
+							"raw": "{{url}}/semesters/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"semesters",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{semesterId}}"
 								}
 							]
 						}
@@ -273,19 +457,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/lecturers/:id",
+							"raw": "{{url}}/lecturers/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"lecturers",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{lecturerId}}"
 								}
 							]
 						}
@@ -304,22 +487,37 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/lecturers?firstName&lastName",
+							"raw": "{{url}}/lecturers?firstName=Moh&lastName&page=1&pageSize=10&sort=lastName&sortDirection=DESC",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"lecturers"
 							],
 							"query": [
 								{
 									"key": "firstName",
-									"value": null
+									"value": "Moh"
 								},
 								{
 									"key": "lastName",
 									"value": null
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "lastName"
+								},
+								{
+									"key": "sortDirection",
+									"value": "DESC"
 								}
 							]
 						}
@@ -338,12 +536,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/lecturers/:id/offers",
+							"raw": "{{url}}/lecturers/:id/offers",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"lecturers",
 								":id",
 								"offers"
@@ -351,7 +548,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{lecturerId}}"
 								}
 							]
 						}
@@ -360,6 +557,20 @@
 				},
 				{
 					"name": "add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"lecturerId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -379,12 +590,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/lecturers",
+							"raw": "{{url}}/lecturers",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"lecturers"
 							]
 						}
@@ -404,7 +614,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Mohammad Begher\",\r\n    \"lastName\": \"Menhaj\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Mohammad Bagher\",\r\n    \"lastName\": \"Menhaj\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -412,19 +622,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/lecturers/:id",
+							"raw": "{{url}}/lecturers/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"lecturers",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{lecturerId}}"
 								}
 							]
 						}
@@ -443,19 +652,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/lecturers/:id",
+							"raw": "{{url}}/lecturers/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"lecturers",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{lecturerId}}"
 								}
 							]
 						}
@@ -479,19 +687,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/courses/:id",
+							"raw": "{{url}}/courses/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"courses",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{courseId}}"
 								}
 							]
 						}
@@ -510,12 +717,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/courses?name&units",
+							"raw": "{{url}}/courses?name&units=4&page=1&pageSize=5",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"courses"
 							],
 							"query": [
@@ -525,7 +731,15 @@
 								},
 								{
 									"key": "units",
-									"value": null
+									"value": "4"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "5"
 								}
 							]
 						}
@@ -544,12 +758,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/courses/:id/offers",
+							"raw": "{{url}}/courses/:id/offers",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"courses",
 								":id",
 								"offers"
@@ -557,7 +770,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{courseId}}"
 								}
 							]
 						}
@@ -566,6 +779,20 @@
 				},
 				{
 					"name": "add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"courseId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -577,7 +804,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"mathematics\",\r\n    \"units\": 4\r\n}",
+							"raw": "{\r\n    \"name\": \"Neural Network Fundamentals\",\r\n    \"units\": 4\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -585,12 +812,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/courses",
+							"raw": "{{url}}/courses",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"courses"
 							]
 						}
@@ -618,19 +844,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/courses/:id",
+							"raw": "{{url}}/courses/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"courses",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{courseId}}"
 								}
 							]
 						}
@@ -649,19 +874,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/courses/:id",
+							"raw": "{{url}}/courses/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"courses",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{courseId}}"
 								}
 							]
 						}
@@ -685,19 +909,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/students/:id",
+							"raw": "{{url}}/students/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"students",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{studentId}}"
 								}
 							]
 						}
@@ -716,12 +939,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/students?firstName&lastName&studentNumber",
+							"raw": "{{url}}/students?firstName&lastName&studentNumber=250001",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"students"
 							],
 							"query": [
@@ -735,7 +957,7 @@
 								},
 								{
 									"key": "studentNumber",
-									"value": null
+									"value": "250001"
 								}
 							]
 						}
@@ -754,12 +976,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/students/:id/offers",
+							"raw": "{{url}}/students/:id/offers",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"students",
 								":id",
 								"offers"
@@ -767,7 +988,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{studentId}}"
 								}
 							]
 						}
@@ -776,6 +997,21 @@
 				},
 				{
 					"name": "add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"studentId\", jsonData.id);\r",
+									"pm.collectionVariables.set(\"studentNumber\", jsonData.studentNumber);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -787,7 +1023,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Payam\",\r\n    \"lastName\": \"Mostafaei\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Mehdi\",\r\n    \"lastName\": \"Taromi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -795,12 +1031,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/students",
+							"raw": "{{url}}/students",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"students"
 							]
 						}
@@ -820,7 +1055,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"Payam\",\r\n    \"lastName\": \"Mostafaei\"\r\n}",
+							"raw": "{\r\n    \"firstName\": \"Mehdi\",\r\n    \"lastName\": \"Taremi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -828,19 +1063,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/students/:id",
+							"raw": "{{url}}/students/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"students",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{studentId}}"
 								}
 							]
 						}
@@ -859,19 +1093,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/students/:id",
+							"raw": "{{url}}/students/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"students",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{studentId}}"
 								}
 							]
 						}
@@ -895,19 +1128,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/offers/:id",
+							"raw": "{{url}}/offers/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{offerId}}"
 								}
 							]
 						}
@@ -926,30 +1158,29 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/offers?title&courseId&lecturerId&semesterId",
+							"raw": "{{url}}/offers?title=&courseId={{courseId}}&lecturerId={{lecturerId}}&semesterId={{semesterId}}",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers"
 							],
 							"query": [
 								{
 									"key": "title",
-									"value": null
+									"value": ""
 								},
 								{
 									"key": "courseId",
-									"value": null
+									"value": "{{courseId}}"
 								},
 								{
 									"key": "lecturerId",
-									"value": null
+									"value": "{{lecturerId}}"
 								},
 								{
 									"key": "semesterId",
-									"value": null
+									"value": "{{semesterId}}"
 								}
 							]
 						}
@@ -958,6 +1189,20 @@
 				},
 				{
 					"name": "add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"offerId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -969,7 +1214,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"mathematics-2025\",\r\n    \"courseId\": \"\",\r\n    \"lecturerId\": \"\",\r\n    \"capacity\": 20\r\n}",
+							"raw": "{\r\n    \"title\": \"ANN-2025\",\r\n    \"courseId\": \"{{courseId}}\",\r\n    \"lecturerId\": \"{{lecturerId}}\",\r\n    \"capacity\": 20\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -977,12 +1222,11 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/offers",
+							"raw": "{{url}}/offers",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers"
 							]
 						}
@@ -1002,7 +1246,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"mathematics-2025\",\r\n    \"courseId\": \"\",\r\n    \"lecturerId\": \"\",\r\n    \"capacity\": 20\r\n}",
+							"raw": "{\r\n    \"title\": \"mathematics-2025\",\r\n    \"courseId\": \"{{courseId}}\",\r\n    \"lecturerId\": \"{{lecturerId}}\",\r\n    \"capacity\": 20\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1010,19 +1254,18 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/offers/:id",
+							"raw": "{{url}}/offers/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{offerId}}"
 								}
 							]
 						}
@@ -1041,19 +1284,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/offers/:id",
+							"raw": "{{url}}/offers/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{offerId}}"
 								}
 							]
 						}
@@ -1067,6 +1309,20 @@
 			"item": [
 				{
 					"name": "add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.collectionVariables.set(\"enrollmentId\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1077,12 +1333,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/offers/:offerId/enrollments",
+							"raw": "{{url}}/offers/:offerId/enrollments",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers",
 								":offerId",
 								"enrollments"
@@ -1090,7 +1345,7 @@
 							"variable": [
 								{
 									"key": "offerId",
-									"value": ""
+									"value": "{{offerId}}"
 								}
 							]
 						}
@@ -1109,12 +1364,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/offers/:offerId/enrollments/:id",
+							"raw": "{{url}}/offers/:offerId/enrollments/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers",
 								":offerId",
 								"enrollments",
@@ -1123,11 +1377,11 @@
 							"variable": [
 								{
 									"key": "offerId",
-									"value": ""
+									"value": "{{offerId}}"
 								},
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{enrollmentId}}"
 								}
 							]
 						}
@@ -1146,12 +1400,11 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/offers/:offerId/enrollments/:id",
+							"raw": "{{url}}/offers/:offerId/enrollments/:id",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"offers",
 								":offerId",
 								"enrollments",
@@ -1160,11 +1413,11 @@
 							"variable": [
 								{
 									"key": "offerId",
-									"value": ""
+									"value": "{{offerId}}"
 								},
 								{
 									"key": "id",
-									"value": ""
+									"value": "{{enrollmentId}}"
 								}
 							]
 						}
@@ -1172,6 +1425,72 @@
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "refreshToken",
+			"value": ""
+		},
+		{
+			"key": "semesterId",
+			"value": ""
+		},
+		{
+			"key": "lecturerId",
+			"value": ""
+		},
+		{
+			"key": "courseId",
+			"value": ""
+		},
+		{
+			"key": "studentId",
+			"value": ""
+		},
+		{
+			"key": "studentNumber",
+			"value": ""
+		},
+		{
+			"key": "offerId",
+			"value": ""
+		},
+		{
+			"key": "enrollmentId",
+			"value": ""
 		}
 	]
 }
