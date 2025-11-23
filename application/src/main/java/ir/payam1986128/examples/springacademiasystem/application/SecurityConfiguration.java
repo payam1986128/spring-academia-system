@@ -34,16 +34,18 @@ class SecurityConfiguration {
                 .authorizeHttpRequests(
                         req -> req.requestMatchers(
                                     "/api/auth/login/**",
-                                    "/api/auth/users",
                                     "/api/auth/refresh-token",
                                     "/v3/api-docs*/**",
                                     "/swagger-ui/**"
                                 ).permitAll()
-                                .requestMatchers("/api/products").hasAuthority("MANUFACTURER")
-                                .requestMatchers("/api/products?**").hasAuthority("MANUFACTURER")
-                                .requestMatchers("/api/products/{id}").hasAuthority("MANUFACTURER")
-                                .requestMatchers(HttpMethod.POST, "/api/products/{id}/movements").hasAuthority("LOGISTICS_PROVIDER")
-                                .requestMatchers(HttpMethod.GET, "/api/products/{id}/movements").hasAuthority("AUDITOR")
+                                .requestMatchers("/api/auth/users").hasAuthority("ADMIN")
+                                .requestMatchers("/api/courses**").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
+                                .requestMatchers("/api/lecturers**").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
+                                .requestMatchers("/api/semesters**").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
+                                .requestMatchers("/api/students**").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
+                                .requestMatchers("/api/offers").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
+                                .requestMatchers("/api/offers?**").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
+                                .requestMatchers("/api/offers/{id}").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
                                 .anyRequest().authenticated()
                 ).userDetailsService(userDetailsService)
                 .sessionManagement(session -> session
