@@ -35,11 +35,11 @@ public class EnrollmentService implements EnrollmentServiceApi {
     public EnrollmentCreationResponse register(String offerId, String username) {
         Optional<OfferDto> offer = offerDao.getOffer(parseId(offerId));
         if (offer.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("offer not found");
         }
         Optional<UserDto> studentUser = userDao.findByUsername(username);
         if (studentUser.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("student not found");
         }
 
         OfferDto offerDto = offer.get();
@@ -69,11 +69,11 @@ public class EnrollmentService implements EnrollmentServiceApi {
     private EnrollmentDto getEnrollment(UUID offerId, UUID id, String username) {
         Optional<UserDto> studentUser = userDao.findByUsername(username);
         if (studentUser.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("student not found");
         }
         Optional<EnrollmentDto> optionalEnrollment = dao.getEnrollment(offerId, id, studentUser.get().getStudent().getId());
         if (optionalEnrollment.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("enrollment not found");
         }
         return optionalEnrollment.get();
     }
@@ -82,11 +82,11 @@ public class EnrollmentService implements EnrollmentServiceApi {
     public void drop(String offerId, String id, String username) {
         Optional<UserDto> studentUser = userDao.findByUsername(username);
         if (studentUser.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("student not found");
         }
         Optional<OfferDto> offer = offerDao.getOffer(parseId(offerId));
         if (offer.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("offer not found");
         }
 
         OfferDto offerDto = offer.get();

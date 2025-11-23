@@ -8,4 +8,5 @@ import lombok.Setter;
 public class EnrollmentGetResponse {
     private String id;
     private String offerId;
+    private String studentId;
 }

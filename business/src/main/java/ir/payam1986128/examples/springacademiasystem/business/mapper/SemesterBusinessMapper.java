@@ -12,8 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface SemesterBusinessMapper extends CommonBusinessMapper {
     SemesterGetResponse toSemesterGetResponse(SemesterDto semester);
-    SemesterDto toSemesterDto(SemesterDto semester);
-    List<SemesterDto> toSemestersDto(List<SemesterDto> semestersDto);
+    ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester.SemesterDto toSemesterDto(SemesterDto semester);
     SemesterDto toSemesterDto(SemesterCreationRequest semesterCreationRequest);
     void toSemesterDto(@MappingTarget SemesterDto semester, SemesterEditionRequest semesterEditionRequest);
 }

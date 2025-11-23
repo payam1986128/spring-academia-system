@@ -38,7 +38,7 @@ public class LecturerDao implements LecturerDaoApi {
             pageRequest.withSort(Sort.Direction.valueOf(filter.getSortDirection().name()), filter.getSort());
         }
         BooleanExpression predicate = QLecturer.lecturer.firstName.like("%"+filter.getFirstName()+"%");
-        predicate = predicate.and(QLecturer.lecturer.lastName.eq("%"+filter.getLastName()+"%"));
+        predicate = predicate.and(QLecturer.lecturer.lastName.like("%"+filter.getLastName()+"%"));
         Page<Lecturer> lecturersPage = repository.findAll(predicate, pageRequest);
         return LecturersDto.builder()
                 .lecturers(mapper.toLecturersDto(lecturersPage.getContent()))

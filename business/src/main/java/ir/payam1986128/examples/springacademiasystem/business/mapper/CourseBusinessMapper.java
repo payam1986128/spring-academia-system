@@ -14,8 +14,7 @@ public interface CourseBusinessMapper extends CommonBusinessMapper {
     CourseGetResponse toCourseGetResponse(CourseDto course);
     CourseFilterDto toCourseFilterDto(CoursesGetRequest coursesGetRequest);
     CoursesGetResponse toCoursesGetResponse(CoursesDto courses);
-    CourseDto toCourseDto(CourseDto course);
-    List<CourseDto> toCoursesDto(List<CourseDto> coursesDto);
+    ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.course.CourseDto toCourseDto(CourseDto course);
     CourseDto toCourseDto(CourseCreationRequest courseCreationRequest);
     void toCourseDto(@MappingTarget CourseDto courseDto, CourseEditionRequest courseEditionRequest);
 }

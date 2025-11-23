@@ -8,18 +8,20 @@ spring:
     properties:
       hibernate:
         show_sql: true
+    open-in-view: false
   datasource:
     url: jdbc:postgresql://localhost:5432/sas
     username: user
     password: secret
     driver-class-name: org.postgresql.Driver
+  jackson:
+    default-property-inclusion: non_null
 
 security:
   jwt:
-    secret-key: cEB5QG0xOTg2MTI4X0BjQGRFbWlAX3NZc1RFbQ==
+    secret-key: c3BySW5HX2IwMFRfQGNAZEVtaUBfc1lzVEVtX0Ywcl8zeEBtcGwz
     access-token-expiration: 3600000
     refresh-token-expiration: 86400000
     skipped-endpoints:
       - /api/auth/login
-      - /api/auth/users
       - /api/auth/refresh-token

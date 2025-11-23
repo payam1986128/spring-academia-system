@@ -36,7 +36,7 @@ public class SemesterService implements SemesterServiceApi {
     private SemesterDto getSemester(UUID id) {
         Optional<SemesterDto> optionalSemester = dao.getSemester(id);
         if (optionalSemester.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("semester not found");
         }
         return optionalSemester.get();
     }
@@ -45,7 +45,7 @@ public class SemesterService implements SemesterServiceApi {
     public SemesterDto getCurrentSemester() {
         Optional<SemesterDto> optionalSemester = dao.getCurrentSemester();
         if (optionalSemester.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("semester not found");
         }
         return optionalSemester.get();
     }

@@ -7,6 +7,9 @@ public interface CommonBusinessMapper {
         return source.toString();
     }
     default UUID toUUID(String source) {
+        if (source == null) {
+            return null;
+        }
         return UUID.fromString(source);
     }
 }

@@ -1,5 +1,6 @@
 package ir.payam1986128.examples.springacademiasystem.persistence.dao;
 
+import ir.payam1986128.examples.springacademiasystem.contract.enumeration.Role;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.UserDaoApi;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.user.UserDto;
 import ir.payam1986128.examples.springacademiasystem.persistence.entity.User;
@@ -8,6 +9,7 @@ import ir.payam1986128.examples.springacademiasystem.persistence.repository.User
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,6 +24,12 @@ public class UserDao implements UserDaoApi {
     public Optional<UserDto> findByUsername(String username) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
         return optionalUser.map(userMapper::toUserDto);
+    }
+
+    @Override
+    public List<UserDto> findAllByRole(Role role) {
+        List<User> users = userRepository.findAllByRole(role);
+        return users.stream().map(userMapper::toUserDto).toList();
     }
 
     @Override

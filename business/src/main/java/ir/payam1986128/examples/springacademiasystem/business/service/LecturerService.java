@@ -35,7 +35,7 @@ public class LecturerService implements LecturerServiceApi {
     private LecturerDto getLecturer(UUID id) {
         Optional<LecturerDto> optionalLecturer = dao.getLecturer(id);
         if (optionalLecturer.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("lecturer not found");
         }
         return optionalLecturer.get();
     }

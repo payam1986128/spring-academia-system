@@ -35,7 +35,7 @@ public class CourseService implements CourseServiceApi {
     private CourseDto getCourse(UUID id) {
         Optional<CourseDto> optionalCourse = dao.getCourse(id);
         if (optionalCourse.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("Course not found");
         }
         return optionalCourse.get();
     }

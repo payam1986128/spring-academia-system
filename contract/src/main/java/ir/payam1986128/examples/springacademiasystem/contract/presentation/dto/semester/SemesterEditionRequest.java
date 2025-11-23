@@ -1,6 +1,7 @@
 package ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.semester;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,9 +14,9 @@ public class SemesterEditionRequest {
     @NotBlank
     private String title;
 
-    @NotBlank
+    @NotNull
     private LocalDate startDate;
 
-    @NotBlank
+    @NotNull
     private LocalDate endDate;
 }

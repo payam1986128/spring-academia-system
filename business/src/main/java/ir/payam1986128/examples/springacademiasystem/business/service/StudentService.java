@@ -37,7 +37,7 @@ public class StudentService implements StudentServiceApi {
     private StudentDto getStudent(UUID id) {
         Optional<StudentDto> optionalStudent = dao.getStudent(id);
         if (optionalStudent.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("student not found");
         }
         return optionalStudent.get();
     }
@@ -53,6 +53,7 @@ public class StudentService implements StudentServiceApi {
     public StudentCreationResponse create(StudentCreationRequest request) {
         StudentDto student = mapper.toStudentDto(request);
         String studentNumber = studentNumberDao.generateStudentNumber();
+        student.setStudentNumber(studentNumber);
         UUID id = dao.addStudent(student);
         return StudentCreationResponse.builder()
                 .id(mapper.toString(id))

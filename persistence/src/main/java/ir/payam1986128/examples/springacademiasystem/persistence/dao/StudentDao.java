@@ -33,7 +33,8 @@ public class StudentDao implements StudentDaoApi {
 
     @Override
     public Optional<StudentDto> getStudent(String studentNumber) {
-        return Optional.empty();
+        Optional<Student> student = repository.findByStudentNumber(studentNumber);
+        return student.map(mapper::toStudentDto);
     }
 
     @Override
@@ -43,8 +44,10 @@ public class StudentDao implements StudentDaoApi {
             pageRequest.withSort(Sort.Direction.valueOf(filter.getSortDirection().name()), filter.getSort());
         }
         BooleanExpression predicate = QStudent.student.firstName.like("%"+filter.getFirstName()+"%");
-        predicate = predicate.and(QStudent.student.lastName.eq("%"+filter.getLastName()+"%"));
-        predicate = predicate.and(QStudent.student.studentNumber.eq(filter.getStudentNumber()));
+        predicate = predicate.and(QStudent.student.lastName.like("%"+filter.getLastName()+"%"));
+        if (filter.getStudentNumber() != null) {
+            predicate = predicate.and(QStudent.student.studentNumber.eq(filter.getStudentNumber()));
+        }
         Page<Student> studentsPage = repository.findAll(predicate, pageRequest);
         return StudentsDto.builder()
                 .students(mapper.toStudentsDto(studentsPage.getContent()))

@@ -33,7 +33,7 @@ class SecurityConfiguration {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         req -> req.requestMatchers(
-                                    "/api/auth/login/**",
+                                    "/api/auth/login",
                                     "/api/auth/refresh-token",
                                     "/v3/api-docs*/**",
                                     "/swagger-ui/**"
@@ -46,6 +46,8 @@ class SecurityConfiguration {
                                 .requestMatchers("/api/offers").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
                                 .requestMatchers("/api/offers?**").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
                                 .requestMatchers("/api/offers/{id}").hasAnyAuthority("ADMIN", "FACULTY_EDUCATION_OFFICE")
+                                .requestMatchers("/api/offers/{offerId}/enrollments").hasAuthority("STUDENT")
+                                .requestMatchers("/api/offers/{offerId}/enrollments/{id}").hasAuthority("STUDENT")
                                 .anyRequest().authenticated()
                 ).userDetailsService(userDetailsService)
                 .sessionManagement(session -> session

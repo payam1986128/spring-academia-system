@@ -14,8 +14,7 @@ public interface LecturerBusinessMapper extends CommonBusinessMapper {
     LecturerGetResponse toLecturerGetResponse(LecturerDto lecturer);
     LecturerFilterDto toLecturerFilterDto(LecturersGetRequest lecturersGetRequest);
     LecturersGetResponse toLecturersGetResponse(LecturersDto lecturers);
-    LecturerDto toLecturerDto(LecturerDto lecturer);
-    List<LecturerDto> toLecturersDto(List<LecturerDto> lecturersDto);
+    ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.lecturer.LecturerDto toLecturerDto(LecturerDto lecturer);
     LecturerDto toLecturerDto(LecturerCreationRequest lecturerCreationRequest);
     void toLecturerDto(@MappingTarget LecturerDto lecturerDto, LecturerEditionRequest lecturerEditionRequest);
 }

@@ -2,11 +2,14 @@ package ir.payam1986128.examples.springacademiasystem.business.service;
 
 import ir.payam1986128.examples.springacademiasystem.business.exception.EntityNotFoundException;
 import ir.payam1986128.examples.springacademiasystem.business.mapper.OfferBusinessMapper;
+import ir.payam1986128.examples.springacademiasystem.business.mapper.SemesterBusinessMapper;
 import ir.payam1986128.examples.springacademiasystem.contract.business.OfferServiceApi;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.OfferDaoApi;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.SemesterDaoApi;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.offer.OfferDto;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.offer.OfferFilterDto;
 import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.offer.OffersDto;
+import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.semester.SemesterDto;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.course.CourseOffersGetResponse;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.lecturer.LecturerOffersGetResponse;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.offer.*;
@@ -26,6 +29,7 @@ import static ir.payam1986128.examples.springacademiasystem.business.util.UUIDUt
 public class OfferService implements OfferServiceApi {
 
     private final OfferDaoApi dao;
+    private final SemesterDaoApi semesterDao;
     private final OfferBusinessMapper mapper;
 
     @Override
@@ -38,7 +42,7 @@ public class OfferService implements OfferServiceApi {
     private OfferDto getOffer(UUID id) {
         Optional<OfferDto> optionalOffer = dao.getOffer(id);
         if (optionalOffer.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new EntityNotFoundException("offer not found");
         }
         return optionalOffer.get();
     }
@@ -53,6 +57,11 @@ public class OfferService implements OfferServiceApi {
     @Override
     public OfferCreationResponse create(OfferCreationRequest request) {
         OfferDto offer = mapper.toOfferDto(request);
+        Optional<SemesterDto> currentSemester = semesterDao.getCurrentSemester();
+        if (currentSemester.isEmpty()) {
+            throw new EntityNotFoundException("Current semester not found");
+        }
+        offer.setSemester(currentSemester.get());
         UUID id = dao.addOffer(offer);
         return new OfferCreationResponse(mapper.toString(id));
     }

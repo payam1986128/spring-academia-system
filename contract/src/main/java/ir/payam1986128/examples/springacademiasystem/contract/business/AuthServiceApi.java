@@ -7,6 +7,7 @@ import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.u
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.user.CreateUserResponse;
 
 public interface AuthServiceApi {
+    void createDefaultAdminIfNotExists();
     CreateUserResponse createUser(CreateUserRequest user);
     AuthResponse login(AuthRequest request);
     RefreshTokenResponse refreshToken(String refreshToken);

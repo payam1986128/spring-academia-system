@@ -18,6 +18,7 @@ import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.u
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.user.CreateUserResponse;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.user.UserDetailsDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,11 +26,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthService implements AuthServiceApi {
 
     private final AuthenticationManager authenticationManager;
@@ -43,6 +46,18 @@ public class AuthService implements AuthServiceApi {
         UserDto userDto = userDao.findByUsername(username)
                 .orElseThrow(UserNotFoundException::new);
         return userMapper.toUserDetailsDto(userDto);
+    }
+
+    public void createDefaultAdminIfNotExists() {
+        List<UserDto> admins = userDao.findAllByRole(Role.ADMIN);
+        if (admins.isEmpty()) {
+            UserDto admin = new UserDto();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin"));
+            admin.setRole(Role.ADMIN);
+            userDao.save(admin);
+            log.info("Default admin user has just been created successfully");
+        }
     }
 
     @Override

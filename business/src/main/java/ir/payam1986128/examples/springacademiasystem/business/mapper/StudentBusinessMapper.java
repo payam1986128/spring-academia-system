@@ -15,8 +15,7 @@ public interface StudentBusinessMapper extends CommonBusinessMapper {
     StudentGetResponse toStudentGetResponse(StudentDto student);
     StudentFilterDto toStudentFilterDto(StudentsGetRequest studentsGetRequest);
     StudentsGetResponse toStudentsGetResponse(StudentsDto students);
-    StudentDto toStudentDto(StudentDto student);
-    List<StudentDto> toStudentsDto(List<StudentDto> studentsDto);
+    ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.student.StudentDto toStudentDto(StudentDto student);
     StudentDto toStudentDto(StudentCreationRequest studentCreationRequest);
     @Mapping(target = "studentNumber", ignore = true)
     void toStudentDto(@MappingTarget StudentDto student, StudentEditionRequest studentEditionRequest);
