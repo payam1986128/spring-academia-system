@@ -48,17 +48,15 @@ public class EnrollmentService implements EnrollmentServiceApi {
         }
 
         OfferDto offerDto = offer.get();
-        offerDto.increaseRegistered();
 
-        if (offerDto.getCapacity() < offerDto.getRegistered()) {
-            throw new EnrollmentCapacityExceededException();
-        }
         EnrollmentDto enrollment = new EnrollmentDto();
         enrollment.setOffer(offerDto);
         enrollment.setStudent(studentUser.get().getStudent());
         UUID savedId = dao.addEnrollment(enrollment);
-
-        offerDao.editOffer(offerDto);
+        boolean ok = offerDao.increaseRegistered(offerDto);
+        if (!ok) {
+            throw new EnrollmentCapacityExceededException();
+        }
 
         return new EnrollmentCreationResponse(savedId.toString());
     }
@@ -95,10 +93,9 @@ public class EnrollmentService implements EnrollmentServiceApi {
         }
 
         OfferDto offerDto = offer.get();
-        offerDto.decreaseRegistered();
 
         EnrollmentDto enrollment = getEnrollment(offer.get().getId(), parseId(id), username);
         dao.deleteEnrollment(enrollment.getId());
-        offerDao.editOffer(offerDto);
+        offerDao.decreaseRegistered(offerDto);
     }
 }

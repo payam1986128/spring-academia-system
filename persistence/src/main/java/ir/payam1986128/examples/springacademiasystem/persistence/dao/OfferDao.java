@@ -67,9 +67,20 @@ public class OfferDao implements OfferDaoApi {
     }
 
     @Override
-    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     public void editOffer(OfferDto offerDto) {
         repository.save(mapper.toOffer(offerDto));
+    }
+
+    @Override
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+    public boolean increaseRegistered(OfferDto offerDto) {
+        return repository.increaseRegistered(offerDto.getId()) > 0;
+    }
+
+    @Override
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+    public boolean decreaseRegistered(OfferDto offerDto) {
+        return repository.decreaseRegistered(offerDto.getId()) > 0;
     }
 
     @Override

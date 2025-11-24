@@ -19,12 +19,4 @@ public class OfferDto {
     private int capacity;
     private int registered;
     private int version;
-
-    public void increaseRegistered() {
-        this.registered++;
-    }
-
-    public void decreaseRegistered() {
-        this.registered--;
-    }
 }

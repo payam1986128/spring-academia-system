@@ -10,14 +10,17 @@ import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.s
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.student.StudentCreationRequest;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.user.CreateUserRequest;
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.instancio.Instancio;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.springdoc.webmvc.ui.SwaggerIndexTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
@@ -27,11 +30,14 @@ import static org.instancio.Select.allStrings;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Slf4j
 class AcademiaApplicationTests {
     private String token;
-    private UUID courseId;
-    private UUID lecturerId;
-    private UUID offerId;
+    private String courseId;
+    private String lecturerId;
+    private String offerId;
     private final int offerCapacity = 10;
     private final int concurrentUsers = 20;
     private final Queue<String> studentNumbers = new ConcurrentLinkedQueue<>();
@@ -39,6 +45,8 @@ class AcademiaApplicationTests {
 
     @LocalServerPort
     public int serverPort;
+    @Autowired
+    private SwaggerIndexTransformer indexPageTransformer;
 
     @PostConstruct
     public void initRestAssured() {
@@ -47,28 +55,13 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(0)
-    void givenAnAdminUser_whenLoginUser_thenResponseStatusIsOk() throws Exception {
-
-        AuthRequest request = new AuthRequest();
-        request.setUsername("admin");
-        request.setPassword("admin");
-
-        token = RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .accept(APPLICATION_JSON_VALUE)
-                .when()
-                .with()
-                .body(request)
-                .post("/api/auth/login")
-                .then()
-                .statusCode(200)
-                .extract()
-                .path("accessToken");
+    void givenAnAdminUser_whenLoginUser_thenResponseStatusIsOk() {
+        token = loginAsAdmin();
     }
 
     @Test
     @Order(1)
-    void givenAnEducationFacultyUser_whenRegisterUser_thenResponseStatusIsCreated() throws Exception {
+    void givenAnEducationFacultyUser_whenRegisterUser_thenResponseStatusIsCreated() {
 
         CreateUserRequest request = new CreateUserRequest();
         request.setUsername("edu1");
@@ -89,7 +82,7 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(2)
-    void givenAnEducationFacultyUser_whenLoginUser_thenResponseStatusIsOk() throws Exception {
+    void givenAnEducationFacultyUser_whenLoginUser_thenResponseStatusIsOk() {
 
         AuthRequest request = new AuthRequest();
         request.setUsername("edu1");
@@ -110,7 +103,7 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(3)
-    void givenASemesterData_whenCreateSemester_thenResponseStatusIsCreated() throws Exception {
+    void givenASemesterData_whenCreateSemester_thenResponseStatusIsCreated() {
         SemesterCreationRequest request = new SemesterCreationRequest();
         request.setTitle("2025-2");
         request.setStartDate(LocalDate.now().minusMonths(3));
@@ -130,7 +123,7 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(4)
-    void givenACourseData_whenCreateCourse_thenResponseStatusIsCreated() throws Exception {
+    void givenACourseData_whenCreateCourse_thenResponseStatusIsCreated() {
         CourseCreationRequest request = new CourseCreationRequest();
         request.setName("ANN");
         request.setUnits(4);
@@ -151,7 +144,7 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(5)
-    void givenALecturerData_whenCreateLecturer_thenResponseStatusIsCreated() throws Exception {
+    void givenALecturerData_whenCreateLecturer_thenResponseStatusIsCreated() {
         LecturerCreationRequest request = new LecturerCreationRequest();
         request.setFirstName("Ali");
         request.setLastName("Alavi");
@@ -172,11 +165,11 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(6)
-    void givenAnOfferData_whenCreateOffer_thenResponseStatusIsCreated() throws Exception {
+    void givenAnOfferData_whenCreateOffer_thenResponseStatusIsCreated() {
         OfferCreationRequest request = new OfferCreationRequest();
         request.setTitle("ANN-2025");
-        request.setLecturerId(lecturerId.toString());
-        request.setCourseId(courseId.toString());
+        request.setLecturerId(lecturerId);
+        request.setCourseId(courseId);
         request.setCapacity(offerCapacity);
 
         offerId = RestAssured.given()
@@ -195,7 +188,7 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(7)
-    void givenAStudentData_whenCreateStudent_thenResponseStatusIsCreated() throws Exception {
+    void givenStudentsData_whenCreateStudents_thenResponseStatusesAreCreated() throws Exception {
         List<Callable<String>> tasks = Stream.generate(
                 () -> (Callable<String>) () -> {
                     StudentCreationRequest request = new StudentCreationRequest();
@@ -228,7 +221,9 @@ class AcademiaApplicationTests {
             List<Future<String>> results = executorService.invokeAll(tasks);
             results.forEach(f -> {
                 try {
-                    studentNumbers.offer(f.get());
+                    String studentNumber = f.get();
+                    log.info("Generated student number: {}", studentNumber);
+                    studentNumbers.offer(studentNumber);
                 } catch (InterruptedException | ExecutionException e) {
                     throw new RuntimeException(e);
                 }
@@ -239,24 +234,29 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(8)
-    void givenAStudentUser_whenRegisterUser_thenResponseStatusIsCreated() throws Exception {
+    void givenStudentUsers_whenRegisterUsers_thenResponseStatusesAreCreated() throws Exception {
+        token = loginAsAdmin();
+
         AtomicInteger userIndex = new AtomicInteger(0);
         List<Callable<Integer>> tasks = Stream.generate(
                 () -> (Callable<Integer>) () -> {
                     CreateUserRequest request = new CreateUserRequest();
-                    request.setUsername("stu"+userIndex.incrementAndGet());
-                    request.setPassword("stu"+userIndex.incrementAndGet());
+                    String userAndPass = "stu"+userIndex.incrementAndGet();
+                    request.setUsername(userAndPass);
+                    request.setPassword(userAndPass);
                     request.setRole(Role.STUDENT);
                     request.setStudentNumber(studentNumbers.poll());
 
                     return RestAssured.given()
                             .contentType(APPLICATION_JSON_VALUE)
                             .accept(APPLICATION_JSON_VALUE)
+                            .header("Authorization", "Bearer " + token)
                             .when()
                             .with()
                             .body(request)
                             .post("/api/auth/users")
                             .then()
+                            .statusCode(201)
                             .extract()
                             .statusCode();
                 }).limit(concurrentUsers).toList();
@@ -276,13 +276,14 @@ class AcademiaApplicationTests {
 
     @Test
     @Order(9)
-    void givenAStudentUser_whenLoginUser_thenResponseStatusIsOk() throws Exception {
+    void givenStudentUsers_whenLoginUsers_thenResponseStatusesAreOk() throws Exception {
         AtomicInteger userIndex = new AtomicInteger(0);
         List<Callable<String>> tasks = Stream.generate(
                 () -> (Callable<String>) () -> {
                     AuthRequest request = new AuthRequest();
-                    request.setUsername("stu"+userIndex.incrementAndGet());
-                    request.setPassword("stu"+userIndex.incrementAndGet());
+                    String userAndPass = "stu"+userIndex.incrementAndGet();
+                    request.setUsername(userAndPass);
+                    request.setPassword(userAndPass);
 
                     return RestAssured.given()
                             .contentType(APPLICATION_JSON_VALUE)
@@ -337,5 +338,23 @@ class AcademiaApplicationTests {
             }).toList();
             assertThat(statuses.stream().filter(s -> s == 201).count()).isEqualTo(offerCapacity);
         }
+    }
+
+    private String loginAsAdmin() {
+        AuthRequest request = new AuthRequest();
+        request.setUsername("admin");
+        request.setPassword("admin");
+
+        return RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .accept(APPLICATION_JSON_VALUE)
+                .when()
+                .with()
+                .body(request)
+                .post("/api/auth/login")
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("accessToken");
     }
 }
