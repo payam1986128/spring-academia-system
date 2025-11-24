@@ -10,20 +10,20 @@ import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.s
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.student.StudentCreationRequest;
 import ir.payam1986128.examples.springacademiasystem.contract.presentation.dto.user.CreateUserRequest;
 import jakarta.annotation.PostConstruct;
-import org.hibernate.validator.internal.constraintvalidators.bv.AssertTrueValidator;
+import org.instancio.Instancio;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.instancio.Select.allStrings;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -31,10 +31,11 @@ class AcademiaApplicationTests {
     private String token;
     private UUID courseId;
     private UUID lecturerId;
-    private String studentNumber;
     private UUID offerId;
     private final int offerCapacity = 10;
     private final int concurrentUsers = 20;
+    private final Queue<String> studentNumbers = new ConcurrentLinkedQueue<>();
+    private final Queue<String> studentTokens = new ConcurrentLinkedQueue<>();
 
     @LocalServerPort
     public int serverPort;
@@ -42,6 +43,27 @@ class AcademiaApplicationTests {
     @PostConstruct
     public void initRestAssured() {
         RestAssured.port = serverPort;
+    }
+
+    @Test
+    @Order(0)
+    void givenAnAdminUser_whenLoginUser_thenResponseStatusIsOk() throws Exception {
+
+        AuthRequest request = new AuthRequest();
+        request.setUsername("admin");
+        request.setPassword("admin");
+
+        token = RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .accept(APPLICATION_JSON_VALUE)
+                .when()
+                .with()
+                .body(request)
+                .post("/api/auth/login")
+                .then()
+                .statusCode(200)
+                .extract()
+                .path("accessToken");
     }
 
     @Test
@@ -56,6 +78,7 @@ class AcademiaApplicationTests {
         RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
                 .accept(APPLICATION_JSON_VALUE)
+                .header("Authorization", "Bearer " + token)
                 .when()
                 .with()
                 .body(request)
@@ -173,63 +196,118 @@ class AcademiaApplicationTests {
     @Test
     @Order(7)
     void givenAStudentData_whenCreateStudent_thenResponseStatusIsCreated() throws Exception {
-        StudentCreationRequest request = new StudentCreationRequest();
-        request.setFirstName("Payam");
-        request.setLastName("Mostafaei");
+        List<Callable<String>> tasks = Stream.generate(
+                () -> (Callable<String>) () -> {
+                    StudentCreationRequest request = new StudentCreationRequest();
+                    request.setFirstName(
+                            Instancio.of(String.class)
+                            .generate(allStrings(), gen -> gen.string().length(10))
+                            .create()
+                    );
+                    request.setLastName(
+                            Instancio.of(String.class)
+                            .generate(allStrings(), gen -> gen.string().length(10))
+                            .create()
+                    );
 
-        studentNumber = RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .accept(APPLICATION_JSON_VALUE)
-                .header("Authorization", "Bearer " + token)
-                .when()
-                .with()
-                .body(request)
-                .post("/api/students")
-                .then()
-                .statusCode(201)
-                .extract()
-                .path("studentNumber");
+                    return RestAssured.given()
+                            .contentType(APPLICATION_JSON_VALUE)
+                            .accept(APPLICATION_JSON_VALUE)
+                            .header("Authorization", "Bearer " + token)
+                            .when()
+                            .with()
+                            .body(request)
+                            .post("/api/students")
+                            .then()
+                            .statusCode(201)
+                            .extract()
+                            .path("studentNumber");
+                }).limit(concurrentUsers).toList();
+
+        try (ExecutorService executorService = Executors.newFixedThreadPool(concurrentUsers)) {
+            List<Future<String>> results = executorService.invokeAll(tasks);
+            results.forEach(f -> {
+                try {
+                    studentNumbers.offer(f.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            assertThat(studentNumbers.size()).isEqualTo(concurrentUsers);
+        }
     }
 
     @Test
     @Order(8)
-    void givenAStudentUser_whenRegisterUser_thenResponseStatusIsCreated() {
-        CreateUserRequest request = new CreateUserRequest();
-        request.setUsername("stu1");
-        request.setPassword("stu1");
-        request.setRole(Role.STUDENT);
-        request.setStudentNumber(studentNumber);
+    void givenAStudentUser_whenRegisterUser_thenResponseStatusIsCreated() throws Exception {
+        AtomicInteger userIndex = new AtomicInteger(0);
+        List<Callable<Integer>> tasks = Stream.generate(
+                () -> (Callable<Integer>) () -> {
+                    CreateUserRequest request = new CreateUserRequest();
+                    request.setUsername("stu"+userIndex.incrementAndGet());
+                    request.setPassword("stu"+userIndex.incrementAndGet());
+                    request.setRole(Role.STUDENT);
+                    request.setStudentNumber(studentNumbers.poll());
 
-        RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .accept(APPLICATION_JSON_VALUE)
-                .when()
-                .with()
-                .body(request)
-                .post("/api/auth/users")
-                .then()
-                .statusCode(201);
+                    return RestAssured.given()
+                            .contentType(APPLICATION_JSON_VALUE)
+                            .accept(APPLICATION_JSON_VALUE)
+                            .when()
+                            .with()
+                            .body(request)
+                            .post("/api/auth/users")
+                            .then()
+                            .extract()
+                            .statusCode();
+                }).limit(concurrentUsers).toList();
+
+        try (ExecutorService executorService = Executors.newFixedThreadPool(concurrentUsers)) {
+            List<Future<Integer>> results = executorService.invokeAll(tasks);
+            List<Integer> statuses = results.stream().map(f -> {
+                try {
+                    return f.get();
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            }).toList();
+            assertThat(statuses.size()).isEqualTo(concurrentUsers);
+        }
     }
 
     @Test
     @Order(9)
     void givenAStudentUser_whenLoginUser_thenResponseStatusIsOk() throws Exception {
+        AtomicInteger userIndex = new AtomicInteger(0);
+        List<Callable<String>> tasks = Stream.generate(
+                () -> (Callable<String>) () -> {
+                    AuthRequest request = new AuthRequest();
+                    request.setUsername("stu"+userIndex.incrementAndGet());
+                    request.setPassword("stu"+userIndex.incrementAndGet());
 
-        AuthRequest request = new AuthRequest();
-        request.setUsername("stu1");
-        request.setPassword("stu1");
+                    return RestAssured.given()
+                            .contentType(APPLICATION_JSON_VALUE)
+                            .accept(APPLICATION_JSON_VALUE)
+                            .when()
+                            .with()
+                            .body(request)
+                            .post("/api/auth/login")
+                            .then()
+                            .statusCode(200)
+                            .extract()
+                            .path("accessToken");
+                }).limit(concurrentUsers).toList();
 
-        token = RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .accept(APPLICATION_JSON_VALUE)
-                .when()
-                .with()
-                .body(request)
-                .post("/api/auth/login")
-                .then()
-                .statusCode(200)
-                .extract()
-                .path("accessToken");
+        try (ExecutorService executorService = Executors.newFixedThreadPool(concurrentUsers)) {
+            List<Future<String>> results = executorService.invokeAll(tasks);
+            results.forEach(f -> {
+                try {
+                    studentTokens.offer(f.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            assertThat(studentTokens.size()).isEqualTo(concurrentUsers);
+        }
     }
 
     @Test
@@ -240,7 +318,7 @@ class AcademiaApplicationTests {
                         .given()
                         .contentType(APPLICATION_JSON_VALUE)
                         .accept(APPLICATION_JSON_VALUE)
-                        .header("Authorization", "Bearer " + token)
+                        .header("Authorization", "Bearer " + studentTokens.poll())
                         .when()
                         .post("/api/offers/"+offerId+"/enrollments")
                         .then()
@@ -248,7 +326,7 @@ class AcademiaApplicationTests {
                         .statusCode()
         ).limit(concurrentUsers).toList();
 
-        try (ExecutorService executorService = taskExecutor()) {
+        try (ExecutorService executorService = Executors.newFixedThreadPool(concurrentUsers)) {
             List<Future<Integer>> results = executorService.invokeAll(tasks);
             List<Integer> statuses = results.stream().map(f -> {
                 try {
@@ -259,9 +337,5 @@ class AcademiaApplicationTests {
             }).toList();
             assertThat(statuses.stream().filter(s -> s == 201).count()).isEqualTo(offerCapacity);
         }
-    }
-
-    private ExecutorService taskExecutor() {
-        return Executors.newFixedThreadPool(concurrentUsers);
     }
 }

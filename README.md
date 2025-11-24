@@ -46,13 +46,14 @@ Two notes to consider is that:<br/>
 note: pre defined admin user info:<br/>
 username: admin<br/>
 password: admin
-1. Create another user with role FACULTY_EDUCATION_OFFICE
-2. Login with that just been created user of faculty education office
-3. Create a semester with start date before now and it's end date after now
-4. Create a course
-5. Create a lecturer
-6. Create an offer with these course and lecturer (current semester is automatically will be used for this offer)
-7. Create a student
-8. Create a user for that student
-9. Login with that user of student
-10. Create an enrollment for that student with just been created offer
+0. Login with admin user. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L50)
+1. Create another user with role FACULTY_EDUCATION_OFFICE. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L71)
+2. Login with that just been created user of faculty education office. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L92)
+3. Create a semester with start date before now and it's end date after now. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L113)
+4. Create a course. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L133)
+5. Create a lecturer. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L154)
+6. Create an offer with these course and lecturer (current semester is automatically will be used for this offer). [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L175)
+7. Create a student. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L198)
+8. Create a user for that student. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L242)
+9. Login with that user of student. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L279)
+10. Create an enrollment for that student with just been created offer. [See here](https://github.com/payam1986128/spring-academia-system/blob/master/application/src/test/java/ir/payam1986128/examples/springacademiasystem/application/AcademiaApplicationTests.java#L315)
