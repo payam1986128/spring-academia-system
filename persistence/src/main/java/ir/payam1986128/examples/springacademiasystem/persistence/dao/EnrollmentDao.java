@@ -19,8 +19,8 @@ public class EnrollmentDao implements EnrollmentDaoApi {
     private final EnrollmentPersistenceMapper mapper;
 
     @Override
-    public Optional<EnrollmentDto> getEnrollment(UUID id) {
-        Optional<Enrollment> optionalEnrollment = repository.findById(id);
+    public Optional<EnrollmentDto> getEnrollment(UUID offerId, UUID studentId) {
+        Optional<Enrollment> optionalEnrollment = repository.findByOffer_IdAndStudent_Id(offerId, studentId);
         return optionalEnrollment.map(mapper::toEnrollmentDto);
     }
 

@@ -5,10 +5,12 @@ import ir.payam1986128.examples.springacademiasystem.contract.persistence.dto.st
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 public class UserDto {
-    private String id;
+    private UUID id;
     private String username;
     private String password;
     private Role role;

@@ -1,5 +1,6 @@
 package ir.payam1986128.examples.springacademiasystem.business.service;
 
+import ir.payam1986128.examples.springacademiasystem.business.exception.EnrollmentAlreadyExistsException;
 import ir.payam1986128.examples.springacademiasystem.business.exception.EnrollmentCapacityExceededException;
 import ir.payam1986128.examples.springacademiasystem.business.exception.EntityNotFoundException;
 import ir.payam1986128.examples.springacademiasystem.business.mapper.EnrollmentBusinessMapper;
@@ -40,6 +41,10 @@ public class EnrollmentService implements EnrollmentServiceApi {
         Optional<UserDto> studentUser = userDao.findByUsername(username);
         if (studentUser.isEmpty()) {
             throw new EntityNotFoundException("student not found");
+        }
+        Optional<EnrollmentDto> enrollmentOptional = dao.getEnrollment(offer.get().getId(), studentUser.get().getId());
+        if (enrollmentOptional.isPresent()) {
+            throw new EnrollmentAlreadyExistsException();
         }
 
         OfferDto offerDto = offer.get();
