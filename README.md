@@ -3,8 +3,8 @@
 ### Run the application:<br/>
 0. Install and configure postgre db
 1. Set connection string in project application.yml
-2. `mvn clean package`. This command should be run to generate querydsl and mapstruct essential sources
-3. $ java -jar application-{version}.jar
+2. `mvn clean package`. This command should be run to generate querydsl and mapstruct essential sources also besides build the jar file
+3. `java -jar application-{version}.jar`
 4. Or use below command:<br/>
    `docker compose run`
 
